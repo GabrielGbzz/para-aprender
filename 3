@@ -1,0 +1,91 @@
+CREATE DATABASE autoprime;
+USE autoprime;
+
+CREATE TABLE Cliente (
+id_Cliente INT AUTO_INCREMENT PRIMARY KEY,
+nome VARCHAR(50),
+email VARCHAR(50),
+senha VARCHAR(99),
+CPF CHAR (20),
+
+CONSTRAINT uc_email
+UNIQUE (email),
+CONSTRAINT uc_CPF
+UNIQUE (CPF),
+CONSTRAINT uc_senha
+UNIQUE (senha)
+);
+
+CREATE TABLE Test (
+id_test INT AUTO_INCREMENT PRIMARY KEY,
+data DATE,
+hora Decimal(24,00),
+id_cliente INT,
+id_veiculo INT,
+
+FOREIGN KEY (id_cliente)
+REFERENCES Cliente(id_cliente)
+);
+
+CREATE TABLE Veiculo ( 
+id_veiculo INT AUTO_INCREMENT PRIMARY KEY,
+marca VARCHAR(50),
+modelo VARCHAR(50),
+ano DATE,
+cor VARCHAR (50),
+tipo VARCHAR (20),
+preco DECIMAL,
+status_venda VARCHAR (50)
+);
+
+CREATE TABLE Ordem (
+id_ordem INT AUTO_INCREMENT PRIMARY KEY,
+data_abertura DATE,
+data_fechamento DATE,
+descricao VARCHAR (50),
+valor_total DECIMAL,
+status VARCHAR (50),
+id_cliente INT,
+id_veiculo INT,
+id_mecanico INT,
+
+FOREIGN KEY (id_cliente)
+REFERENCES Cliente(id_cliente),
+
+FOREIGN KEY (id_veiculo)
+REFERENCES Veiculo(id_veiculo),
+
+FOREIGN KEY (id_mecanico)
+REFERENCES Mecanico(id_mecanico)
+);
+
+CREATE TABLE Mecanico (
+id_mecanico INT AUTO_INCREMENT PRIMARY KEY,
+nome VARCHAR (100),
+especialidade VARCHAR(30),
+telefone CHAR (20),
+
+CONSTRAINT uc_telefone
+UNIQUE (telefone)
+);
+
+CREATE TABLE Item_Ordem (
+id_item INT AUTO_INCREMENT PRIMARY KEY,
+quantidade VARCHAR (50),
+valor DECIMAL,
+id_ordem INT,
+id_peca INT,
+
+FOREIGN KEY (id_ordem)
+REFERENCES Ordem(id_ordem),
+FOREIGN KEY (id_peca)
+REFERENCES peca(id_peca)
+);
+
+CREATE TABLE peca (
+id_peca INT AUTO_INCREMENT PRIMARY KEY,
+nome VARCHAR (50),
+descricao VARCHAR (50),
+preco DECIMAL,
+quantidade VARCHAR (500)
+);
