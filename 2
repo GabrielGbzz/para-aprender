@@ -1,0 +1,89 @@
+CREATE DATABASE tunestream;
+USE tunestream;
+
+CREATE TABLE Artista (
+id_artista INT AUTO_INCREMENT PRIMARY KEY,
+nome_artistico VARCHAR(50),
+pais VARCHAR(50),
+biografia VARCHAR(99),
+
+CONSTRAINT uc_biografia
+UNIQUE (biografia)
+);
+
+CREATE TABLE Album (
+id_album INT AUTO_INCREMENT PRIMARY KEY,
+titulo VARCHAR(50),
+data_lancamento DATE,
+genero VARCHAR(50),
+id_artista INT,
+
+FOREIGN KEY (id_artista)
+REFERENCES Artista(id_artista)
+);
+
+CREATE TABLE Audio ( 
+id_audio INT AUTO_INCREMENT PRIMARY KEY,
+titulo VARCHAR(50),
+duracao VARCHAR(50),
+tipo VARCHAR (50),
+numero_reproducoes VARCHAR (50),
+id_album INT,
+
+FOREIGN KEY (id_album)
+REFERENCES Album(id_album)
+);
+
+CREATE TABLE Royalty (
+id_royalty INT AUTO_INCREMENT PRIMARY KEY,
+valor DECIMAL (12,00),
+data_pagamento DATE,
+id_artista INT,
+id_audio INT,
+
+FOREIGN KEY (id_artista)
+REFERENCES Artista(id_artista),
+
+FOREIGN KEY (id_audio)
+REFERENCES Audio(id_audio)
+);
+
+CREATE TABLE Historico (
+id_historico INT AUTO_INCREMENT PRIMARY KEY,
+data_reproducao DATE,
+tempo_ouvido VARCHAR(30),
+
+id_audio INT,
+id_utilizador INT,
+
+FOREIGN KEY (id_utilizador)
+REFERENCES Utilizador(id_utilizador),
+FOREIGN KEY (id_audio)
+REFERENCES Audio(id_audio)
+);
+
+CREATE TABLE Utilizador (
+id_utilizador INT AUTO_INCREMENT PRIMARY KEY,
+nome VARCHAR (50),
+email VARCHAR (50),
+senha VARCHAR (50),
+tipo VARCHAR(20),
+data_registro DATE,
+
+CONSTRAINT uc_email
+UNIQUE (email),
+CONSTRAINT uc_senha
+UNIQUE (senha)
+);
+
+CREATE TABLE Playlist (
+id_playlist INT AUTO_INCREMENT PRIMARY KEY,
+nome VARCHAR (100),
+data_criacao DATE,
+
+id_utilizador INT,
+
+FOREIGN KEY (id_utilizador)
+REFERENCES Utilizado (id_utilizador)
+);
+);
