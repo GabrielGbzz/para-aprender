@@ -1,0 +1,95 @@
+CREATE DATABASE Edugest;
+USE Edugest;
+
+
+CREATE TABLE Aluno (
+    id_aluno INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100),
+    data_nascimento DATE,
+    cpf CHAR(11),
+    email VARCHAR(100),
+    telefone VARCHAR(20),
+    curso VARCHAR(100),
+    semestre INT,
+
+    CONSTRAINT uc_aluno_cpf UNIQUE (cpf),
+    CONSTRAINT uc_aluno_email UNIQUE (email)
+);
+
+
+CREATE TABLE Disciplina (
+    id_disciplina INT AUTO_INCREMENT PRIMARY KEY,
+    nome_disciplina VARCHAR(100),
+    carga_horaria INT,
+    semestre INT
+);
+
+
+CREATE TABLE Professor (
+    id_professor INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    telefone VARCHAR(20),
+    titulacao VARCHAR(100),
+
+    CONSTRAINT uc_professor_email UNIQUE (email)
+);
+
+
+CREATE TABLE Matricula (
+    id_matricula INT AUTO_INCREMENT PRIMARY KEY,
+    data_matricula DATE,
+    status VARCHAR(20),
+
+    id_aluno INT,
+    id_disciplina INT,
+
+        FOREIGN KEY (id_aluno)
+        REFERENCES Aluno(id_aluno),
+
+        FOREIGN KEY (id_disciplina)
+        REFERENCES Disciplina(id_disciplina)
+);
+
+
+CREATE TABLE Atribuicao (
+    id_atribuicao INT AUTO_INCREMENT PRIMARY KEY,
+    ano_letivo YEAR,
+    semestre INT,
+
+    id_professor INT,
+    id_disciplina INT,
+
+        FOREIGN KEY (id_professor)
+        REFERENCES Professor(id_professor),
+
+        FOREIGN KEY (id_disciplina)
+        REFERENCES Disciplina(id_disciplina)
+
+);
+
+
+CREATE TABLE Nota (
+    id_nota INT AUTO_INCREMENT PRIMARY KEY,
+    nota1 DECIMAL(4,2),
+    nota2 DECIMAL(4,2),
+    media DECIMAL(4,2),
+    situacao VARCHAR(20),
+
+    id_matricula INT,
+
+        FOREIGN KEY (id_matricula)
+        REFERENCES Matricula(id_matricula)
+);
+
+
+CREATE TABLE Falta (
+    id_falta INT AUTO_INCREMENT PRIMARY KEY,
+    data_falta DATE,
+    quantidade INT,
+
+    id_matricula INT,
+
+        FOREIGN KEY (id_matricula)
+        REFERENCES Matricula(id_matricula)
+);
